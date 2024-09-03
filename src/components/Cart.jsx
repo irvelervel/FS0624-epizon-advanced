@@ -11,6 +11,9 @@ import { removeFromCartAction } from '../redux/actions'
 const Cart = () => {
   const arrayOfBooksInTheCart = useSelector((store) => store.cart.content)
 
+  // controlliamo i libri disponibili
+  const allTheBooks = useSelector((store) => store.book.available)
+
   const dispatch = useDispatch()
 
   return (
@@ -46,6 +49,11 @@ const Cart = () => {
             0
           )}
           $
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <p>I libri disponibili nel negozio sono {allTheBooks.length}</p>
         </Col>
       </Row>
     </Row>

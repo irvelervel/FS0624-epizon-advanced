@@ -3,6 +3,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import cartReducer from '../reducers/cart'
 import userReducer from '../reducers/user'
+import bookReducer from '../reducers/book'
 // il fatto che il file dentro la cartella reducers si chiami proprio "index.js"
 // semplifica l'import, perchè si può omettere
 
@@ -10,6 +11,7 @@ import userReducer from '../reducers/user'
 const bigReducer = combineReducers({
   cart: cartReducer, // questi sono i "nomi" delle fette
   user: userReducer,
+  book: bookReducer,
 })
 
 const store = configureStore({
