@@ -1,11 +1,15 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaShoppingCart } from 'react-icons/fa'
 // colleghiamo BookDetail al redux store -> però in modalità "dispatch"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addToCartAction } from '../redux/actions'
 
 const BookDetail = ({ bookSelected }) => {
   const dispatch = useDispatch()
+
+  const username = useSelector((store) => {
+    return store.user.name // il nome inserito nel login, che parte come ''
+  })
 
   return (
     <div className="mt-3 mb-4 mb-lg-0">
@@ -35,18 +39,25 @@ const BookDetail = ({ bookSelected }) => {
                 <span className="fw-bold">Price:</span>&nbsp;
                 {bookSelected.price}$
               </p>
-              <Button
-                className="d-flex align-items-center"
-                onClick={() => {
-                  console.log('CIAONE')
-                  dispatch(addToCartAction(bookSelected))
-                  // io faccio il dispatch del risultato di addToCartAction(bookSelected)
-                  // ovvero la action con type 'ADD_TO_CART' e il payload: bookSelected
-                }}
-              >
-                <span className="me-2">AGGIUNGI AL</span>
-                <FaShoppingCart />
-              </Button>
+
+              {username ? (
+                // l'utente ha fatto il login
+                <Button
+                  className="d-flex align-items-center"
+                  onClick={() => {
+                    console.log('CIAONE')
+                    dispatch(addToCartAction(bookSelected))
+                    // io faccio il dispatch del risultato di addToCartAction(bookSelected)
+                    // ovvero la action con type 'ADD_TO_CART' e il payload: bookSelected
+                  }}
+                >
+                  <span className="me-2">AGGIUNGI AL</span>
+                  <FaShoppingCart />
+                </Button>
+              ) : (
+                // username è ancora stringa vuota!
+                <p>Fai il login per comprare questo libro!</p>
+              )}
             </Col>
           </Row>
         </>

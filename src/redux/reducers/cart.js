@@ -1,26 +1,20 @@
 // qui dentro scrivo il reducer per la mia app
 
-import { ADD_TO_CART, REMOVE_FROM_CART, SET_USERNAME } from '../actions'
+import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
 
 // anche redux, come lo stato di un singolo componente, ha bisogno di un valore
 // iniziale per il suo stato
 
 const initialState = {
-  // cercate di organizzare il vostro stato di redux in "slices"
-  // ovvero sotto-oggetti
-  cart: {
-    content: [], // l'array di libri attualmente nel carrello
-  },
-
-  // una nuova "slice" (fetta)
-  user: {
-    name: '',
-  },
+  // dovete immaginare di essere GIÀ dentro la fetta "cart"
+  content: [], // l'array di libri attualmente nel carrello
+  // non ci serve più la proprietà "cart"
+  // immaginate di esservi già dentro
 }
 
 // = initialState significa che initialState è il valore di DEFAULT di state
 // quando initialState sarà undefined (al primo avvio) noi gli diamo il valore iniziale
-const mainReducer = (state = initialState, action) => {
+const cartReducer = (state = initialState, action) => {
   // parametro 1 -> state è lo stato corrente di redux
   // parametro 2 -> action è l'azione che è stata appena "dispatchata"
   //
@@ -37,35 +31,19 @@ const mainReducer = (state = initialState, action) => {
         // state.cart.content.push(action.payload) <-- V I E T A T O
         // non possiamo modificare lo state da cui partiamo
         ...state, // si assicura di portare dentro anche la fetta "user"
-        cart: {
-          ...state.cart,
-          content: [...state.cart.content, action.payload], // :D
-          //   content: state.cart.content.concat(action.payload), // :D
-        },
+        content: [...state.content, action.payload], // :D
+        //   content: state.cart.content.concat(action.payload), // :D
       }
 
     case REMOVE_FROM_CART:
       return {
-        ...state, // si assicura di portare dentro anche la fetta "user"
-        cart: {
-          ...state.cart,
-          //   content: [
-          //     ...state.cart.content.slice(0, action.payload),
-          //     ...state.cart.content.slice(action.payload + 1),
-          //   ],
-          content: state.cart.content.filter((book, i) => i !== action.payload),
-          // action.payload è l'indice da rimuovere
-        },
-      }
-
-    case SET_USERNAME:
-      return {
-        ...state, // in questo modo non ci perdiamo il cart
-        user: {
-          ...state.user,
-          name: action.payload, // in questo caso è semplicemente una stringa,
-          // la posso usare come NUOVO valore di name
-        },
+        ...state,
+        //   content: [
+        //     ...state.content.slice(0, action.payload),
+        //     ...state.content.slice(action.payload + 1),
+        //   ],
+        content: state.content.filter((book, i) => i !== action.payload),
+        // action.payload è l'indice da rimuovere
       }
 
     default: {
@@ -80,4 +58,4 @@ const mainReducer = (state = initialState, action) => {
   }
 }
 
-export default mainReducer
+export default cartReducer
